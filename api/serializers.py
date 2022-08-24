@@ -4,6 +4,7 @@ from rest_framework import serializers
 from .models.mango import Mango
 from .models.user import User
 from .models.note import Note
+from .models.folder import Folder
 
 class MangoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -13,7 +14,15 @@ class MangoSerializer(serializers.ModelSerializer):
 class NoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Note
-        feilds = '__all__'
+        fields = '__all__'
+
+class FolderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Folder
+        fields = '__all__'
+
+#if errors, change note serialzier to not have folders
+#change seraializer to not include key w relationship
 
 
 class UserSerializer(serializers.ModelSerializer):
