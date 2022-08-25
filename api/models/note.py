@@ -1,3 +1,4 @@
+
 from django.db import models
 from django.contrib.auth import get_user_model
 from .folder import Folder
@@ -6,6 +7,7 @@ from .folder import Folder
 class Note(models.Model):
   # define fields
   # https://docs.djangoproject.com/en/3.0/ref/models/fields/
+  title = models.TextField(null=True, blank=True, default="unnamed note")
   body = models.TextField(null=True, blank=True)
   updated = models.DateTimeField(auto_now=True)
   created = models.DateTimeField(auto_now_add=True)
