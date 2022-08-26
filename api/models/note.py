@@ -7,12 +7,13 @@ from .folder import Folder
 class Note(models.Model):
   # define fields
   # https://docs.djangoproject.com/en/3.0/ref/models/fields/
-  title = models.TextField(null=True, blank=True, default="unnamed note")
-  body = models.TextField(null=True, blank=True)
+  title = models.TextField(default="unnamed note")
+  body = models.TextField(default="", blank=True)
   updated = models.DateTimeField(auto_now=True)
   created = models.DateTimeField(auto_now_add=True)
   folder = models.ForeignKey(
-    Folder, related_name='notes', on_delete=models.CASCADE
+    Folder, related_name='notes', on_delete=models.CASCADE, 
+    null=True
   )
   owner = models.ForeignKey(
       get_user_model(),

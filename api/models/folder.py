@@ -6,7 +6,7 @@ class Folder(models.Model):
   # define fields
   # https://docs.djangoproject.com/en/3.0/ref/models/fields/
   name = models.CharField(max_length=100, default="Unnamed Folder")
-  description = models.CharField(max_length=300, default="")
+  description = models.CharField(max_length=300, default="No Description", blank=True)
   updated = models.DateTimeField(auto_now=True)
   created = models.DateTimeField(auto_now_add=True)
   owner = models.ForeignKey(

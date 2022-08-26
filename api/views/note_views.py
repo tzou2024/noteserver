@@ -21,9 +21,15 @@ class Notes(generics.ListCreateAPIView):
         return Response({ 'notes': data })
 
     def post(self, request):
+        
         """Create request"""
         # Add user to request data object
         request.data['note']['owner'] = request.user.id
+        print("request.data['note']: ", request.data['note'])
+        if(request.data["note"]["title"] == None):
+            request.data["note"]["title"] = "unnamed note"
+        if(request.data["note"]["body"] == None):
+            request.data["note"]["body"] = ""
         # Serialize/create note
         note = NoteSerializer(data=request.data['note'])
         # If the note data is valid according to our serializer...

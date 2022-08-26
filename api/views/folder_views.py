@@ -24,8 +24,15 @@ class Folders(generics.ListCreateAPIView):
 
     def post(self, request):
         """Create request"""
-        print(request.data)
         
+        if(request.data["folder"]["name"] == ""):
+            request.data["folder"]["name"] = "Unnamed Folder"
+
+        if(request.data["folder"]["description"] == ""):
+            request.data["folder"]["description"] = "No Description"
+
+        print("data: ", request.data)
+
         # Add user to request data object
         request.data['folder']['owner'] = request.user.id
         # Serialize/create folder
@@ -47,10 +54,14 @@ class FolderDetail(generics.RetrieveUpdateDestroyAPIView):
         # Only want to show owned folders?
         if request.user != folder.owner:
             raise PermissionDenied('Unauthorized, you do not own this folder')
-
+        # print("folder: ",folder.notes.all())
         # Run the data through the serializer so it's formatted
         data = FolderSerializer(folder).data
-        return Response({ 'folder': data })
+        notes = folder.notes.all()
+        data2 = NoteSerializer(notes, many=True).data
+        # print("data: ", data)
+        # print("data2: ", data2)
+        return Response({ 'folder': data, 'notes': data2})
 
     def delete(self, request, pk):
         """Delete request"""
@@ -74,8 +85,11 @@ class FolderDetail(generics.RetrieveUpdateDestroyAPIView):
 
         # Ensure the owner field is set to the current user's ID
         request.data['folder']['owner'] = request.user.id
+        print(request.data["folder"])
+        
         # Validate updates with serializer
         data = FolderSerializer(folder, data=request.data['folder'], partial=True)
+        # print("data: ", data)
         if data.is_valid():
             # Save & send a 204 no content
             data.save()
